@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.ProfileRequest;
 import com.example.demo.dto.ProfileResponse;
 import com.example.demo.service.api.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-//@Tag(name = "User")  swagger
+@Tag(name = "User")
 @AllArgsConstructor
 @RestController
 @RequestMapping("user")

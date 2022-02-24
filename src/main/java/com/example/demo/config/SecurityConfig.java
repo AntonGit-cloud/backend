@@ -22,6 +22,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String[] PERMIT_ALL = {
+            "/api/docs",
+            "/api/docs/swagger-config",
+            "/api/swagger-ui/**",
             "/api/auth/tenant/login",
             "/api/auth/landlord/login",
             "/api/user/reset-password",

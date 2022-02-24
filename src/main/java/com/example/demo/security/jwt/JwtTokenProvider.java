@@ -3,9 +3,11 @@ package com.example.demo.security.jwt;
 import com.example.demo.model.misc.Role;
 import com.example.demo.security.JwtUserDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -17,8 +19,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -39,7 +43,24 @@ public class JwtTokenProvider {
 
     @PostConstruct
     protected void init() {
-        secret = "sadasdas";// Encoders.BASE64.encode(this.secret.getBytes(StandardCharsets.UTF_8));
+        secret = Encoders.BASE64.encode(this.secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public String createToken(String userId, boolean rememberMe, Role contextRole) {
+        Date now = new Date();
+        Claims claims = Jwts.claims(Map.of(CONTEXT_KEY, contextRole))
+                .setSubject(userId);
+        JwtBuilder jwtBuilder = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .signWith(this.getSigningKey());
+
+        if (!rememberMe) {
+            Date validity = new Date(now.getTime() + validityInMilliseconds);
+            jwtBuilder.setExpiration(validity);
+        }
+
+        return jwtBuilder.compact();
     }
 
     public Authentication getAuthentication(String token) {
