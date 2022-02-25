@@ -23,14 +23,14 @@ public class UserController {
 
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ROLE_TENANT') or hasRole('ROLE_LANDLORD') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_STUDENT') or hasRole('ROLE_LECTURER') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
     @GetMapping("profile")
     public ResponseEntity<ProfileResponse> getCurrentUserProfile() {
         return ResponseEntity.ok(userService.getCurrentUserProfile());
     }
 
 
-    @PreAuthorize("hasRole('ROLE_TENANT') or hasRole('ROLE_LANDLORD') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_STUDENT') or hasRole('ROLE_LECTURER') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
     @PutMapping("profile")
     public ResponseEntity<ProfileResponse> updateProfile(@Valid @RequestBody ProfileRequest profileRequest) {
         return ResponseEntity.ok(userService.updateCurrentUserProfile(profileRequest));
@@ -38,7 +38,7 @@ public class UserController {
 
 /*
 
-    @PreAuthorize("hasRole('ROLE_TENANT') or hasRole('ROLE_LANDLORD') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
+    @PreAuthorize("hasRole('ROLE_TENANT') or hasRole('ROLE_LECTURER') or hasRole('ROLE_ACCOUNT_ADMINISTRATOR') or hasRole('ROLE_ACCOUNT_MANAGER')")
     @PatchMapping("change-password")
     public ResponseEntity<?> changePassword(@Valid @RequestBody PasswordSetRequest passwordSetRequest) {
         userService.changePassword(passwordSetRequest);

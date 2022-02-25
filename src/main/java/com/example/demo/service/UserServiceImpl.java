@@ -4,15 +4,21 @@ import com.example.demo.dto.PasswordSetRequest;
 import com.example.demo.dto.ProfileRequest;
 import com.example.demo.dto.ProfileResponse;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.Lecturer;
+import com.example.demo.model.Student;
 import com.example.demo.model.User;
 import com.example.demo.model.VerificationToken;
 import com.example.demo.model.misc.Role;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.jwt.JwtUser;
+import com.example.demo.service.api.LecturerService;
+import com.example.demo.service.api.StudentService;
 import com.example.demo.service.api.UserService;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,14 +34,26 @@ import java.util.regex.Pattern;
 @Service
 public class UserServiceImpl implements UserService {
 
+
+    @Lazy
+    @Autowired
+    private StudentService studentService;
+
+    @Lazy
+    @Autowired
+    private LecturerService lecturerService;
+
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Value("${garentii.landlord.frontend.url}")
-    private String landlordFrontendUrl;
+    @Value("${garentii.lecturer.frontend.url}")
+    private String studentFrontendUrl;
 
     @Override
     public Optional<User> getByEmail(String email) {
@@ -68,13 +86,15 @@ public class UserServiceImpl implements UserService {
     public ProfileResponse getCurrentUserProfile() {
         Role currentUserContextRole = getCurrentUserContextRole();
         switch (currentUserContextRole) {
-            case ROLE_TENANT:
-                return null;
-            case ROLE_LANDLORD:
-                return null;
-            case ROLE_ACCOUNT_MANAGER:
+            case ROLE_STUDENT:
+                Student currentUserStudent = studentService.getCurrentUserTenant();
+                return userMapper.fromStudentToProfile(currentUserStudent, currentUserContextRole);
+            case ROLE_LECTURER:
+                Lecturer currentUserLecturer = lecturerService.getCurrentUserLecturer();
+                return userMapper.fromLecturerToProfile(currentUserLecturer, currentUserContextRole);
             case ROLE_ACCOUNT_ADMINISTRATOR:
-                return null;
+                //Assistant currentUserAssistant = assistantService.getCurrentUserAssistant();
+                //return userMapper.fromAssistantToProfile(currentUserAssistant, currentUserContextRole);
             default:
                 throw new IllegalArgumentException(String.format("Unknown role '%s'", currentUserContextRole));
         }
@@ -118,7 +138,7 @@ public class UserServiceImpl implements UserService {
         int extId = erpUserSyncService.sync(savedUser);
         saveExtId(savedUser, extId);
 
-        if (Role.ROLE_LANDLORD.equals(currentUserContextRole)) {
+        if (Role.ROLE_LECTURER.equals(currentUserContextRole)) {
             this.changeLandlordBankAccount(profileRequest.getBankAccount());
         }*/
 
@@ -142,7 +162,7 @@ public class UserServiceImpl implements UserService {
 
         Tenant tenant = tenantService.getByUser(user)
                 .orElse(null);
-        Landlord landlord = landlordService.getByUser(user)
+        Lecturer landlord = landlordService.getByUser(user)
                 .orElse(null);
 
         notificationService.createNotification(NotificationType.PASSWORD_CHANGED, context, tenant, landlord);
@@ -289,10 +309,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private Role getRoleByBaseUrl(String baseUrl) {
-        if (landlordFrontendUrl.contains(baseUrl)) {
-            return Role.ROLE_LANDLORD;
+        if (studentFrontendUrl.contains(baseUrl)) {
+            return Role.ROLE_LECTURER;
         } else {
-            return Role.ROLE_TENANT;
+            return Role.ROLE_STUDENT;
         }
     }
 

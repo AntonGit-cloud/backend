@@ -25,8 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/docs",
             "/api/docs/swagger-config",
             "/api/swagger-ui/**",
-            "/api/auth/tenant/login",
-            "/api/auth/landlord/login",
+            "/api/auth/student/login",
+            "/api/auth/lecturer/login",
             "/api/user/reset-password",
             "/api/user/confirm-reset-password",
             "/api/user/confirm-account"

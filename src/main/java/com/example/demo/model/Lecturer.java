@@ -9,8 +9,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 
 @Data
-@Document("landlord")
-public class Landlord {
+@Document("lecturer")
+public class Lecturer {
     @Id
     private String id;
 

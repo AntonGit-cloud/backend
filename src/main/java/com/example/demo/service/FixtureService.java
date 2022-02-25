@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.model.Landlord;
-import com.example.demo.model.Tenant;
+import com.example.demo.model.Lecturer;
+import com.example.demo.model.Student;
 import com.example.demo.model.User;
 import com.example.demo.model.misc.Role;
-import com.example.demo.repository.LandlordRepository;
-import com.example.demo.repository.TenantRepository;
+import com.example.demo.repository.LecturerRepository;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ public class FixtureService {
     private UserRepository userRepository;
 
     @Autowired
-    private LandlordRepository landlordRepository;
+    private LecturerRepository lecturerRepository;
 
     @Autowired
-    private TenantRepository tenantRepository;
-    
+    private StudentRepository studentRepository;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -48,27 +48,27 @@ public class FixtureService {
 
     private void createAll() {
 
-        User tenantUser1 = createUser("613f858ed9fceec4d1f6f47b", "Anton@Afanasiev.com",
-                "+49", "661234561", "Anton", "Afanasiev", "DG7Uj6xp26FjFVyW", Set.of(Role.ROLE_TENANT));
-        User tenantUser2 = createUser("613f858ed9fceec4d1f6f47c", "Ilya@Marinichev.com",
-                "+49", "625712349", "Ilya", "Marinichev", "cVHdJL4hGZ4yMGZD", Set.of(Role.ROLE_TENANT));
+        User studentUser1 = createUser("613f858ed9fceec4d1f6f47b", "Anton@Afanasiev.com",
+                "+49", "661234561", "Anton", "Afanasiev", "DG7Uj6xp26FjFVyW", Set.of(Role.ROLE_STUDENT));
+        User studentUser2 = createUser("613f858ed9fceec4d1f6f47c", "Ilya@Marinichev.com",
+                "+49", "625712349", "Ilya", "Marinichev", "cVHdJL4hGZ4yMGZD", Set.of(Role.ROLE_STUDENT));
 
-        User landlordUser1 = createUser("613f85f7da7e9127cd0d9725", "landlord1@garentii.com",
-                "+49", "661234562", "Jonathan", "Fischer", "5UWXq5urus5Vz6BR", Set.of(Role.ROLE_LANDLORD));
-        User landlordUser2 = createUser("613f85f7da7e9127cd0d9726", "landlord2@garentii.com",
-                "+49", "661234563", "Luis", "Schneider", "mBazA7NLuEPHcf4A", Set.of(Role.ROLE_LANDLORD));
-        User landlordUser3 = createUser("613f85f7da7e9127cd0d9727", "landlord3@garentii.com",
-                "+49", "954539108", "Elias", "Schmidt", "6j54SPTh7LJBTjsN", Set.of(Role.ROLE_LANDLORD));
-        User landlordUser4 = createUser("613f85f7da7e9127cd0d9728", "landlord4@garentii.com",
-                "+49", "508583695", "Finn", "Müller", "b8MVd5xkhMhtETzc", Set.of(Role.ROLE_LANDLORD));
+        User lecturerUser1 = createUser("613f85f7da7e9127cd0d9725", "lecturer1@garentii.com",
+                "+49", "661234562", "Jonathan", "Fischer", "5UWXq5urus5Vz6BR", Set.of(Role.ROLE_LECTURER));
+        User lecturerUser2 = createUser("613f85f7da7e9127cd0d9726", "lecturer2@garentii.com",
+                "+49", "661234563", "Luis", "Schneider", "mBazA7NLuEPHcf4A", Set.of(Role.ROLE_LECTURER));
+        User lecturerUser3 = createUser("613f85f7da7e9127cd0d9727", "lecturer3@garentii.com",
+                "+49", "954539108", "Elias", "Schmidt", "6j54SPTh7LJBTjsN", Set.of(Role.ROLE_LECTURER));
+        User lecturerUser4 = createUser("613f85f7da7e9127cd0d9728", "lecturer4@garentii.com",
+                "+49", "508583695", "Finn", "Müller", "b8MVd5xkhMhtETzc", Set.of(Role.ROLE_LECTURER));
 
-        Landlord landlord1 = createLandlord("613f861f8b1317633733bda1", landlordUser1);
-        Landlord landlord2 = createLandlord("613f861f8b1317633733bda2", landlordUser2);
-        Landlord landlord3 = createLandlord("613f861f8b1317633733bda3", landlordUser3);
-        Landlord landlord4 = createLandlord("613f861f8b1317633733bda4", landlordUser4);
+        Lecturer lecturer1 = createLecturer("613f861f8b1317633733bda1", lecturerUser1);
+        Lecturer lecturer2 = createLecturer("613f861f8b1317633733bda2", lecturerUser2);
+        Lecturer lecturer3 = createLecturer("613f861f8b1317633733bda3", lecturerUser3);
+        Lecturer lecturer4 = createLecturer("613f861f8b1317633733bda4", lecturerUser4);
 
-        Tenant tenant1 = createTenant(tenantUser1, "613f86a2e4c4273919ae3eac");
-        Tenant tenant2 = createTenant(tenantUser2, "613f86a2e4c4273919ae3ead");
+        Student student = createStudent(studentUser1, "613f86a2e4c4273919ae3eac");
+        Student student2 = createStudent(studentUser2, "613f86a2e4c4273919ae3ead");
     }
 
     private User createUser(String id,
@@ -99,33 +99,33 @@ public class FixtureService {
                 });
     }
 
-    private Tenant createTenant(User user, String id) {
-        return tenantRepository.findById(id)
+    private Student createStudent(User user, String id) {
+        return studentRepository.findById(id)
                 .orElseGet(() -> {
-                    Tenant tenant = new Tenant();
+                    Student tenant = new Student();
                     tenant.setId(id);
                     tenant.setUser(user);
                     tenant.setCreatedAt(LocalDateTime.now());
 
 
-                    Tenant savedTenant = tenantRepository.save(tenant);
+                    Student savedTenant = studentRepository.save(tenant);
                     log.info("Fixture tenant with id '{}' successfully created", savedTenant.getId());
                     return savedTenant;
                 });
     }
 
-    private Landlord createLandlord(String landlordId, User user) {
-        return landlordRepository.findById(landlordId)
+    private Lecturer createLecturer(String lecturerId, User user) {
+        return lecturerRepository.findById(lecturerId)
                 .orElseGet(() -> {
-                    Landlord landlord = new Landlord();
-                    landlord.setId(landlordId);
-                    landlord.setUser(user);
-                    landlord.setCreatedAt(LocalDateTime.now());
+                    Lecturer lecturer = new Lecturer();
+                    lecturer.setId(lecturerId);
+                    lecturer.setUser(user);
+                    lecturer.setCreatedAt(LocalDateTime.now());
 
 
-                    Landlord savedLandlord = landlordRepository.save(landlord);
-                    log.info("Fixture landlord with id '{}' successfully created", savedLandlord.getId());
-                    return savedLandlord;
+                    Lecturer savedLecturer = lecturerRepository.save(lecturer);
+                    log.info("Fixture lecturer with id '{}' successfully created", savedLecturer.getId());
+                    return savedLecturer;
                 });
     }
 

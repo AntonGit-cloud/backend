@@ -27,8 +27,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             "/api/claim/(.*)/document/(.*)",
             "/api/chat/message/(.*)/document/(.*)"
     );
-    private final static String COOKIE_TENANT_AUTH_NAME = "tenantAuthorizationToken";
-    private final static String COOKIE_LANDLORD_AUTH_NAME = "landlordAuthorizationToken";
+    private final static String COOKIE_STUDENT_AUTH_NAME = "studentAuthorizationToken";
+    private final static String COOKIE_LECTURER_AUTH_NAME = "lecturerAuthorizationToken";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -41,7 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             token = Optional.ofNullable(request.getCookies())
                     .flatMap(cookies ->
                             Arrays.stream(request.getCookies())
-                                    .filter(cookie -> COOKIE_TENANT_AUTH_NAME.equals(cookie.getName()) || COOKIE_LANDLORD_AUTH_NAME.equals(cookie.getName()))
+                                    .filter(cookie -> COOKIE_STUDENT_AUTH_NAME.equals(cookie.getName()) || COOKIE_LECTURER_AUTH_NAME.equals(cookie.getName()))
                                     .findAny()
                                     .map(Cookie::getValue)
                     ).orElseGet(() -> jwtTokenProvider.resolveToken(request));

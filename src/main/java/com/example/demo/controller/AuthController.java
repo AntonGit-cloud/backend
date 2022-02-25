@@ -23,13 +23,13 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("tenant/login")
-    public ResponseEntity<AuthResponse> loginTenant(@Valid @RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_TENANT)));
+    @PostMapping("student/login")
+    public ResponseEntity<AuthResponse> loginStudent(@Valid @RequestBody AuthRequest authRequest) {
+        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_STUDENT)));
     }
 
-    @PostMapping("landlord/login")
-    public ResponseEntity<AuthResponse> loginLandlord(@Valid @RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_LANDLORD, Role.ROLE_ACCOUNT_MANAGER, Role.ROLE_ACCOUNT_ADMINISTRATOR)));
+    @PostMapping("lecturer/login")
+    public ResponseEntity<AuthResponse> loginLecturer(@Valid @RequestBody AuthRequest authRequest) {
+        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_LECTURER, Role.ROLE_ACCOUNT_MANAGER, Role.ROLE_ACCOUNT_ADMINISTRATOR)));
     }
 }
