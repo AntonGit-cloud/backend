@@ -53,13 +53,13 @@ public class FixtureService {
         User studentUser2 = createUser("613f858ed9fceec4d1f6f47c", "Ilya@Marinichev.com",
                 "+49", "625712349", "Ilya", "Marinichev", "cVHdJL4hGZ4yMGZD", Set.of(Role.ROLE_STUDENT));
 
-        User lecturerUser1 = createUser("613f85f7da7e9127cd0d9725", "lecturer1@garentii.com",
+        User lecturerUser1 = createUser("613f85f7da7e9127cd0d9725", "lecturer1@diplom.com",
                 "+49", "661234562", "Jonathan", "Fischer", "5UWXq5urus5Vz6BR", Set.of(Role.ROLE_LECTURER));
-        User lecturerUser2 = createUser("613f85f7da7e9127cd0d9726", "lecturer2@garentii.com",
+        User lecturerUser2 = createUser("613f85f7da7e9127cd0d9726", "lecturer2@diplom.com",
                 "+49", "661234563", "Luis", "Schneider", "mBazA7NLuEPHcf4A", Set.of(Role.ROLE_LECTURER));
-        User lecturerUser3 = createUser("613f85f7da7e9127cd0d9727", "lecturer3@garentii.com",
+        User lecturerUser3 = createUser("613f85f7da7e9127cd0d9727", "lecturer3@diplom.com",
                 "+49", "954539108", "Elias", "Schmidt", "6j54SPTh7LJBTjsN", Set.of(Role.ROLE_LECTURER));
-        User lecturerUser4 = createUser("613f85f7da7e9127cd0d9728", "lecturer4@garentii.com",
+        User lecturerUser4 = createUser("613f85f7da7e9127cd0d9728", "lecturer4@diplom.com",
                 "+49", "508583695", "Finn", "Müller", "b8MVd5xkhMhtETzc", Set.of(Role.ROLE_LECTURER));
 
         Lecturer lecturer1 = createLecturer("613f861f8b1317633733bda1", lecturerUser1);
