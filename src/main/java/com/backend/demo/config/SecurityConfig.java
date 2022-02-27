@@ -1,7 +1,7 @@
 package com.backend.demo.config;
 
-import com.backend.demo.security.jwt.JwtTokenProvider;
 import com.backend.demo.security.jwt.JwtConfigurer;
+import com.backend.demo.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/docs",
             "/api/docs/swagger-config",
             "/api/swagger-ui/**",
-            "/api/auth/student/login",
-            "/api/auth/lecturer/login",
+            "/api/auth/login",
             "/api/user/reset-password",
             "/api/user/confirm-reset-password",
             "/api/user/confirm-account"
