@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("student/login")
     public ResponseEntity<AuthResponse> loginStudent(@Valid @RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_STUDENT)));
+        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_STUDENT, Role.ROLE_LECTURER)));
     }
 
     @PostMapping("lecturer/login")

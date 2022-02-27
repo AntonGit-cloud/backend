@@ -1,9 +1,11 @@
 package com.backend.demo.service;
 
+import com.backend.demo.model.EducationalInstitution;
 import com.backend.demo.model.Lecturer;
 import com.backend.demo.model.Student;
 import com.backend.demo.model.User;
 import com.backend.demo.model.misc.Role;
+import com.backend.demo.repository.InstitutionRepository;
 import com.backend.demo.repository.LecturerRepository;
 import com.backend.demo.repository.StudentRepository;
 import com.backend.demo.repository.UserRepository;
@@ -34,6 +36,8 @@ public class FixtureService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private InstitutionRepository institutionRepository;
 
     @Value("${fixture.bootstrap.enable:false}")
     private Boolean bootstrapEnabled;
@@ -48,19 +52,27 @@ public class FixtureService {
 
     private void createAll() {
 
+        EducationalInstitution educationalInstitution = createInstitution("6134d1f6f47b", "DPI");
+
         User studentUser1 = createUser("613f858ed9fceec4d1f6f47b", "Anton@Afanasiev.com",
-                "+49", "661234561", "Anton", "Afanasiev", "DG7Uj6xp26FjFVyW", Set.of(Role.ROLE_STUDENT));
+                "+49", "661234561", "Anton", "Afanasiev", "DG7Uj6xp26FjFVyW", Set.of(Role.ROLE_STUDENT),
+                educationalInstitution);
         User studentUser2 = createUser("613f858ed9fceec4d1f6f47c", "Ilya@Marinichev.com",
-                "+49", "625712349", "Ilya", "Marinichev", "cVHdJL4hGZ4yMGZD", Set.of(Role.ROLE_STUDENT));
+                "+49", "625712349", "Ilya", "Marinichev", "cVHdJL4hGZ4yMGZD", Set.of(Role.ROLE_STUDENT),
+                educationalInstitution);
 
         User lecturerUser1 = createUser("613f85f7da7e9127cd0d9725", "lecturer1@diplom.com",
-                "+49", "661234562", "Jonathan", "Fischer", "5UWXq5urus5Vz6BR", Set.of(Role.ROLE_LECTURER));
+                "+49", "661234562", "Jonathan", "Fischer", "5UWXq5urus5Vz6BR", Set.of(Role.ROLE_LECTURER),
+                educationalInstitution);
         User lecturerUser2 = createUser("613f85f7da7e9127cd0d9726", "lecturer2@diplom.com",
-                "+49", "661234563", "Luis", "Schneider", "mBazA7NLuEPHcf4A", Set.of(Role.ROLE_LECTURER));
+                "+49", "661234563", "Luis", "Schneider", "mBazA7NLuEPHcf4A", Set.of(Role.ROLE_LECTURER),
+                educationalInstitution);
         User lecturerUser3 = createUser("613f85f7da7e9127cd0d9727", "lecturer3@diplom.com",
-                "+49", "954539108", "Elias", "Schmidt", "6j54SPTh7LJBTjsN", Set.of(Role.ROLE_LECTURER));
+                "+49", "954539108", "Elias", "Schmidt", "6j54SPTh7LJBTjsN", Set.of(Role.ROLE_LECTURER),
+                educationalInstitution);
         User lecturerUser4 = createUser("613f85f7da7e9127cd0d9728", "lecturer4@diplom.com",
-                "+49", "508583695", "Finn", "Müller", "b8MVd5xkhMhtETzc", Set.of(Role.ROLE_LECTURER));
+                "+49", "508583695", "Finn", "Müller", "b8MVd5xkhMhtETzc", Set.of(Role.ROLE_LECTURER),
+                educationalInstitution);
 
         Lecturer lecturer1 = createLecturer("613f861f8b1317633733bda1", lecturerUser1);
         Lecturer lecturer2 = createLecturer("613f861f8b1317633733bda2", lecturerUser2);
@@ -78,7 +90,8 @@ public class FixtureService {
                             String firstName,
                             String lastName,
                             String password,
-                            Set<Role> roles) {
+                            Set<Role> roles,
+                            EducationalInstitution educationalInstitution) {
         return userRepository.findById(id)
                 .orElseGet(() -> {
                     User user = new User();
@@ -87,6 +100,7 @@ public class FixtureService {
                     user.setPassword(passwordEncoder.encode(password));
                     user.setActive(true);
                     user.setFirstName(firstName);
+                    user.setEducationalInstitution(educationalInstitution);
                     user.setLastName(lastName);
                     user.setRoles(roles);
                     user.setDialCode(dialCode);
@@ -126,6 +140,22 @@ public class FixtureService {
                     Lecturer savedLecturer = lecturerRepository.save(lecturer);
                     log.info("Fixture lecturer with id '{}' successfully created", savedLecturer.getId());
                     return savedLecturer;
+                });
+    }
+
+    private EducationalInstitution createInstitution(String Id, String name) {
+
+        return institutionRepository.findById(Id)
+                .orElseGet(() -> {
+                    EducationalInstitution educationalInstitution = new EducationalInstitution();
+                    educationalInstitution.setId(Id);
+                    educationalInstitution.setName(name);
+                    // lecturer.setCreatedAt(LocalDateTime.now());
+
+
+                    EducationalInstitution savedInstitution = institutionRepository.save(educationalInstitution);
+                    log.info("Fixture lecturer with id '{}' successfully created", savedInstitution.getId());
+                    return savedInstitution;
                 });
     }
 
