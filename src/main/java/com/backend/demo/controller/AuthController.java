@@ -23,13 +23,8 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("student/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> loginStudent(@Valid @RequestBody AuthRequest authRequest) {
         return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_STUDENT, Role.ROLE_LECTURER)));
-    }
-
-    @PostMapping("lecturer/login")
-    public ResponseEntity<AuthResponse> loginLecturer(@Valid @RequestBody AuthRequest authRequest) {
-        return ResponseEntity.ok(authService.login(authRequest, Set.of(Role.ROLE_LECTURER, Role.ROLE_ACCOUNT_MANAGER, Role.ROLE_ACCOUNT_ADMINISTRATOR)));
     }
 }
