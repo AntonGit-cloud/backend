@@ -9,3 +9,7 @@
 | lecturer2@diplom.com | +49661234563 | mBazA7NLuEPHcf4A |
 | lecturer3@diplom.com | +49954539108 | 6j54SPTh7LJBTjsN |
 | lecturer4@diplom.com | +49508583695 | b8MVd5xkhMhtETzc |
+
+
+# UML diagram interaction
+https://app.creately.com/diagram/PhFzzGbWfG4/edit
