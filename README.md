@@ -14,6 +14,8 @@
 # UML diagram interaction
 https://app.creately.com/diagram/PhFzzGbWfG4/edit
 
+# LUNACY Lecturer & Student Apps
+https://lun-us.icons8.com/d/qBK6uC0x4UCy-3ebTn9bJA?page=erlhjpMClU6nRPCARG0RUg&vp=-101,140,3149,2400
 
 
 # Утверждение темы диплома 
